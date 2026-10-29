@@ -1,15 +1,19 @@
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace PlainToolkit.ObjectiveC.Native;
 
-public static class Runtime
+public static partial class Runtime
 {
-    [DllImport("libobjc.dylib", CallingConvention = CallingConvention.Cdecl)]
-    public static extern unsafe IntPtr objc_getClass(byte* name);
+    [LibraryImport("libobjc.dylib")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe partial IntPtr objc_getClass(byte* name);
     
-    [DllImport("libobjc.dylib", CallingConvention = CallingConvention.Cdecl)]
-    public static extern unsafe byte* sel_getName(IntPtr name);
+    [LibraryImport("libobjc.dylib")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe partial byte* sel_getName(IntPtr name);
     
-    [DllImport("libobjc.dylib", CallingConvention = CallingConvention.Cdecl)]
-    public static extern unsafe IntPtr sel_registerName(byte* name);
+    [LibraryImport("libobjc.dylib")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe partial IntPtr sel_registerName(byte* name);
 }
