@@ -1,6 +1,6 @@
 namespace PlainToolkit.ObjectiveC.Runtime;
 
-public class NSObject
+public class ObjCObject
 {
     
 }
