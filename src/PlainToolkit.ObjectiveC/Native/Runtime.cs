@@ -9,5 +9,5 @@ public static partial class Runtime
     
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static unsafe partial IntPtr objc_getClass(byte* name);
+    public static partial IntPtr objc_getClass(IntPtr name);
 }

@@ -15,7 +15,7 @@ public readonly record struct ObjCSel(IntPtr Value)
     public static implicit operator IntPtr(ObjCSel h) => h.Value;
     public static explicit operator ObjCSel(IntPtr ptr) => new(ptr);
 
-    public static unsafe ObjCSel FromString(string name)
+    public static ObjCSel FromString(string name)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
 
@@ -36,8 +36,8 @@ public readonly record struct ObjCSel(IntPtr Value)
         }
     }
 
-    public static string ToManagedString(ObjCSel objCSel)
+    public string ToManagedString()
     {
-        return objCSel.IsNull ? string.Empty : Marshal.PtrToStringUTF8(Native.ObjC.sel_getName(objCSel.Value))!;
+        return Marshal.PtrToStringUTF8(Native.ObjC.sel_getName(Value))!;
     }
 }

@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="src/PlainToolkit.ObjectiveC/PlainToolkit.ObjectiveC.csproj" />
+  <Project Path="tests/PlainToolkit.ObjectiveC.Tests.Cli/PlainToolkit.ObjectiveC.Tests.Cli.csproj" />
+  <Project Path="tests/PlainToolkit.ObjectiveC.Tests/PlainToolkit.ObjectiveC.Tests.csproj" />
 </Solution>
