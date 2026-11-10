@@ -5,15 +5,15 @@ namespace PlainToolkit.ObjectiveC.Runtime;
 /// <summary>
 /// 表示一个 Objective-C NSString 句柄的只读包装。
 /// </summary>
-/// <param name="Value">NSString 的底层指针句柄（<see cref="IntPtr"/>）。</param>
-public readonly record struct ObjCString(IntPtr Value)
+/// <param name="Value">NSString 的底层指针句柄（<see cref="nint"/>）。</param>
+public readonly record struct ObjCString(nint Value)
 {
-    public readonly IntPtr Value = Value;
+    public readonly nint Value = Value;
 
-    public bool IsNull => Value == IntPtr.Zero;
+    public bool IsNull => Value == nint.Zero;
 
-    public static implicit operator IntPtr(ObjCString h) => h.Value;
-    public static explicit operator ObjCString(IntPtr ptr) => new(ptr);
+    public static implicit operator nint(ObjCString h) => h.Value;
+    public static explicit operator ObjCString(nint ptr) => new(ptr);
 
     public static ObjCString FromString(string str)
     {
@@ -24,8 +24,8 @@ public readonly record struct ObjCString(IntPtr Value)
         try
         {
             var result = nsStringClass
-                .SendMessage(Selectors.Alloc)
-                .SendMessage(Selectors.InitWithUtf8String, utf8);
+                .SendMessage<ObjCObject>(Selectors.Alloc)
+                .SendMessage<nint, ObjCObject>(Selectors.InitWithUtf8String, utf8);
 
             return new ObjCString(result.Value);
         }
@@ -37,7 +37,7 @@ public readonly record struct ObjCString(IntPtr Value)
 
     public string ToManagedString()
     {
-        var ptr = ((ObjCObject)Value).SendMessage(Selectors.Utf8String);
+        var ptr = ((ObjCObject)Value).SendMessage<nint>(Selectors.Utf8String);
         return Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
     }
 }

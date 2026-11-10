@@ -5,15 +5,15 @@ namespace PlainToolkit.ObjectiveC.Runtime;
 /// <summary>
 /// 表示一个 Objective-C SEL 句柄的只读包装。
 /// </summary>
-/// <param name="Value">SEL 的底层指针句柄（<see cref="IntPtr"/>）。</param>
-public readonly record struct ObjCSel(IntPtr Value)
+/// <param name="Value">SEL 的底层指针句柄（<see cref="nint"/>）。</param>
+public readonly record struct ObjCSel(nint Value)
 {
-    public readonly IntPtr Value = Value;
+    public readonly nint Value = Value;
 
-    public bool IsNull => Value == IntPtr.Zero;
+    public bool IsNull => Value == nint.Zero;
 
-    public static implicit operator IntPtr(ObjCSel h) => h.Value;
-    public static explicit operator ObjCSel(IntPtr ptr) => new(ptr);
+    public static implicit operator nint(ObjCSel h) => h.Value;
+    public static explicit operator ObjCSel(nint ptr) => new(ptr);
 
     public static ObjCSel FromString(string name)
     {

@@ -5,10 +5,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../../src/PlainToolkit.ObjectiveC/PlainToolkit.ObjectiveC.csproj" />
+    <!--<ProjectReference Include="../../src/PlainToolkit.ObjectiveC.SourceGenerators/PlainToolkit.ObjectiveC.SourceGenerators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"/>-->
   </ItemGroup>
   
 </Project>

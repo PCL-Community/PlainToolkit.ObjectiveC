@@ -9,9 +9,9 @@ public static partial class ObjC
     
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static  partial IntPtr sel_getName(IntPtr name);
+    public static  partial nint sel_getName(nint name);
     
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static  partial IntPtr sel_registerName(IntPtr name);
+    public static  partial nint sel_registerName(nint name);
 }

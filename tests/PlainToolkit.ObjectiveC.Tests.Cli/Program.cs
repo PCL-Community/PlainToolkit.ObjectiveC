@@ -10,18 +10,19 @@ class Program
         NativeLibrary.Load("/System/Library/Frameworks/AppKit.framework/AppKit");
         
         var app = ObjCObject.GetClass("NSApplication")
-            .SendMessage(ObjCSel.FromString("sharedApplication"));
+            .SendMessage<ObjCObject>(ObjCSel.FromString("sharedApplication"));
         
-        app.SendMessage(ObjCSel.FromString("setActivationPolicy:"), 0);
+        app.SendMessage<nint>(ObjCSel.FromString("setActivationPolicy:"), 0);
         app.SendMessage(ObjCSel.FromString("activate"));
+        app.SendMessage<nint>(ObjCSel.FromString("setMessageText:"), 0);
         
         var msg = ObjCString.FromString("测试");
 
         var alert = ObjCObject.GetClass("NSAlert")
-            .SendMessage(Selectors.Alloc)
-            .SendMessage(Selectors.Init); 
+            .SendMessage<ObjCObject>(Selectors.Alloc)
+            .SendMessage<ObjCObject>(Selectors.Init); 
         
-        alert.SendMessage(ObjCSel.FromString("setMessageText:"), msg);
+        alert.SendMessage<nint>(ObjCSel.FromString("setMessageText:"), msg);
         alert.SendMessage(ObjCSel.FromString("runModal"));
     }
 }
