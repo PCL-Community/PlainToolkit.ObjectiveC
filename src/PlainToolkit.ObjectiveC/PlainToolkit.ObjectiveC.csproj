@@ -8,11 +8,43 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <InterceptorsNamespaces>$(InterceptorsNamespaces);PlainToolkit.ObjectiveC.Generated</InterceptorsNamespaces>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageId>PlainToolkit.ObjectiveC</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>PCL Community</Authors>
+    <Description>A simple, lightweight Objective-C interoperability library.</Description>
+    <PackageProjectUrl>https://github.com/PCL-Community/PlainToolkit.ObjectiveC</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>ObjectiveC, objc, objective-c, Objective-C, ObjC, interop, interoperability, runtime, native, native-interop, native-interop-library, apple, macOS, iOS, MacCatalyst, dotnet, .NET, CSharp, C#, bindings, binding, Xamarin, MAUI, Uno, Avalonia, source-generator, source-generators, Roslyn, interceptor, interceptors, PInvoke</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/PCL-Community/PlainToolkit.ObjectiveC</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../PlainToolkit.ObjectiveC.SourceGenerators/PlainToolkit.ObjectiveC.SourceGenerators.csproj"
                       OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false"/>
+                      ReferenceOutputAssembly="false"
+                      PackAsAnalyzer="true" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="PlainToolkit.ObjectiveC.targets" Pack="true" PackagePath="build/;buildTransitive/" />
+    <None Include="../../README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <Target Name="PackObjectiveCGenerator" BeforeTargets="_GetPackageFiles">
+    <MSBuild Projects="../PlainToolkit.ObjectiveC.SourceGenerators/PlainToolkit.ObjectiveC.SourceGenerators.csproj"
+             Targets="GetTargetPath"
+             Properties="Configuration=$(Configuration)">
+      <Output TaskParameter="TargetOutputs" ItemName="_ObjectiveCGeneratorTargetPath" />
+    </MSBuild>
+
+    <ItemGroup>
+      <None Include="@(_ObjectiveCGeneratorTargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs/" Visible="false" />
+    </ItemGroup>
+  </Target>
 
 </Project>
