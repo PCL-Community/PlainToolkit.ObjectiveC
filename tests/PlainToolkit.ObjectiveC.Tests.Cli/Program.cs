@@ -14,7 +14,6 @@ class Program
         
         app.SendMessage<nint>(ObjCSel.FromString("setActivationPolicy:"), 0);
         app.SendMessage(ObjCSel.FromString("activate"));
-        app.SendMessage<nint>(ObjCSel.FromString("setMessageText:"), 0);
         
         var msg = ObjCString.FromString("测试");
 
