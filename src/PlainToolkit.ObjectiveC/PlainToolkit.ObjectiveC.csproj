@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);PlainToolkit.ObjectiveC.Generated</InterceptorsNamespaces>
   </PropertyGroup>
 
   <ItemGroup>

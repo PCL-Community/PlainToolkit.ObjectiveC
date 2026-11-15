@@ -8,7 +8,7 @@ namespace PlainToolkit.ObjectiveC.Runtime;
 /// 表示一个 Objective-C Class 句柄的只读包装。
 /// </summary>
 /// <param name="Value">Class 的底层指针句柄（<see cref="nint"/>）。</param>
-public readonly partial record struct ObjCObject(nint Value)
+public readonly record struct ObjCObject(nint Value)
 {
     public readonly nint Value = Value;
 
