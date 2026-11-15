@@ -209,11 +209,9 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
 
                 sb.AppendLine(
                     $"                {result}((delegate* unmanaged[Cdecl]<nint, nint, {generic}{(info.Method.ReturnsVoid ? ", void" : string.Empty)}>)global::PlainToolkit.ObjectiveC.Native.Message.MsgSend)(obj, msg{(info.Signature!.ParameterTypes.Length > 0 ? ", " : string.Empty)}{argument});");
-                if (!info.Method.ReturnsVoid)
-                {
-                    sb.AppendLine(
-                        $"                return global::System.Runtime.CompilerServices.Unsafe.As<{GetTypeName(info.Signature!.ReturnType!)}, TResult>(ref result);");
-                }
+                sb.AppendLine(info.Method.ReturnsVoid
+                    ? "                return;"
+                    : $"                return global::System.Runtime.CompilerServices.Unsafe.As<{GetTypeName(info.Signature!.ReturnType!)}, TResult>(ref result);");
             }
         }
 
