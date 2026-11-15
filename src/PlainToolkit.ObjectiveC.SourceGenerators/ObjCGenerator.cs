@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -152,8 +153,24 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
             {
                 sb.AppendLine("        {");
 
+                GenerateIf(sb, infos);
+
+                sb.AppendLine();
+                sb.AppendLine(
+                    """            throw new global::System.Diagnostics.UnreachableException("Unexpected execution path.");""");
+
+                sb.AppendLine("        }");
+            }
+
+            void GenerateIf(StringBuilder sb, ImmutableArray<MethodInfo> infos)
+            {
+                var signatures = new HashSet<SendMessageSignature>(SendMessageSignatureComparer.Instance);
+                
                 foreach (var info in infos)
                 {
+                    if (!signatures.Add(info.Signature!))
+                        continue;
+                    
                     var parameterTypes = info.Signature!.ParameterTypes;
                     var typeChecks = parameterTypes.Length == 1
                         ? [$"typeof(T) == typeof({parameterTypes[0]})"]
@@ -161,7 +178,7 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
 
                     if (info.Method.ReturnsVoid)
                     {
-                        sb.AppendLine($"            if ({string.Join(" && ", typeChecks)}))");
+                        sb.AppendLine($"            if ({string.Join(" && ", typeChecks)})");
                     }
                     else
                     {
@@ -174,12 +191,6 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
                     GenerateFunctionPointer(sb, info);
                     sb.AppendLine("            }");
                 }
-
-                sb.AppendLine();
-                sb.AppendLine(
-                    """            throw new global::System.Diagnostics.UnreachableException("Unexpected execution path.");""");
-
-                sb.AppendLine("        }");
             }
 
             void GenerateFunctionPointer(StringBuilder sb, MethodInfo info)
@@ -193,7 +204,7 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
                         ConvertArgument(x, i, info.Signature.ParameterTypes.Length)));
 
                 sb.AppendLine(
-                    $"                {result}((delegate* unmanaged[Cdecl]<nint, nint, {generic}>)global::PlainToolkit.ObjectiveC.Native.Message.MsgSend)(obj, msg{(info.Signature!.ParameterTypes.Length > 0 ? ", " : string.Empty)}{argument});");
+                    $"                {result}((delegate* unmanaged[Cdecl]<nint, nint, {generic}{(info.Method.ReturnsVoid ? ", void" : string.Empty)}>)global::PlainToolkit.ObjectiveC.Native.Message.MsgSend)(obj, msg{(info.Signature!.ParameterTypes.Length > 0 ? ", " : string.Empty)}{argument});");
                 if (!info.Method.ReturnsVoid)
                 {
                     sb.AppendLine(
@@ -269,5 +280,49 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
             IMethodSymbol Method,
             InterceptableLocation Location,
             SendMessageSignature? Signature);
+        
+        private sealed class SendMessageSignatureComparer : IEqualityComparer<SendMessageSignature>
+        {
+            public static readonly SendMessageSignatureComparer Instance = new();
+
+            public bool Equals(SendMessageSignature? x, SendMessageSignature? y)
+            {
+                if (ReferenceEquals(x, y))
+                    return true;
+
+                if (x is null || y is null)
+                    return false;
+
+                if (!SymbolEqualityComparer.Default.Equals(x.ReturnType, y.ReturnType))
+                    return false;
+
+                if (x.ParameterTypes.Length != y.ParameterTypes.Length)
+                    return false;
+
+                for (var i = 0; i < x.ParameterTypes.Length; i++)
+                {
+                    if (!SymbolEqualityComparer.Default.Equals(
+                            x.ParameterTypes[i], y.ParameterTypes[i]))
+                        return false;
+                }
+
+                return true;
+            }
+
+            public int GetHashCode(SendMessageSignature obj)
+            {
+                unchecked
+                {
+                    var hash = SymbolEqualityComparer.Default.GetHashCode(obj.ReturnType);
+
+                    foreach (var type in obj.ParameterTypes)
+                    {
+                        hash = (hash * 31) + SymbolEqualityComparer.Default.GetHashCode(type);
+                    }
+
+                    return hash;
+                }
+            }
+        }
     }
 }
