@@ -102,7 +102,11 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
             builder.AppendLine("{");
             builder.AppendLine("    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]");
             builder.AppendLine(
-                "    file sealed class InterceptsLocationAttribute(int version, string data) : Attribute;");
+                "    file sealed class InterceptsLocationAttribute(int version, string data) : Attribute");
+            builder.AppendLine("    {");
+            builder.AppendLine("        public int Version { get; } = version;");
+            builder.AppendLine("        public string Data { get; } = data;");
+            builder.AppendLine("    }");
             builder.AppendLine("}");
             builder.AppendLine();
             builder.AppendLine("namespace PlainToolkit.ObjectiveC.Generated");
