@@ -27,6 +27,9 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
                 infos,
                 static (spc, infos) =>
                 {
+                    if (infos.IsEmpty)
+                        return;
+                    
                     var infoDict = infos
                         .GroupBy(static info => (
                             info.Signature!.ParameterTypes.Length,
