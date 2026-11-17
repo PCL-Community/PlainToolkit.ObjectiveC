@@ -11,7 +11,7 @@
   
   <PropertyGroup>
     <PackageId>PlainToolkit.ObjectiveC</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>PCL Community</Authors>
     <Description>A simple, lightweight Objective-C interoperability library.</Description>
     <PackageProjectUrl>https://github.com/PCL-Community/PlainToolkit.ObjectiveC</PackageProjectUrl>
