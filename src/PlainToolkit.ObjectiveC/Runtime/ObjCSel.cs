@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlainToolkit.ObjectiveC.Native;
 
 namespace PlainToolkit.ObjectiveC.Runtime;
 
@@ -6,13 +7,17 @@ namespace PlainToolkit.ObjectiveC.Runtime;
 /// 表示一个 Objective-C SEL 句柄的只读包装。
 /// </summary>
 /// <param name="Value">SEL 的底层指针句柄（<see cref="nint"/>）。</param>
-public readonly record struct ObjCSel(nint Value)
+[StructLayout(LayoutKind.Sequential)]
+public readonly record struct ObjCSel : Pointer
 {
-    public readonly nint Value = Value;
+    public ObjCSel(nint ptr)
+    {
+        Ptr = ptr;
+    }
+    
+    public IntPtr Ptr { get; init; }
 
-    public bool IsNull => Value == nint.Zero;
-
-    public static implicit operator nint(ObjCSel h) => h.Value;
+    public static implicit operator nint(ObjCSel h) => h.Ptr;
     public static explicit operator ObjCSel(nint ptr) => new(ptr);
 
     public static ObjCSel FromString(string name)
@@ -38,6 +43,6 @@ public readonly record struct ObjCSel(nint Value)
 
     public string ToManagedString()
     {
-        return Marshal.PtrToStringUTF8(Native.ObjC.sel_getName(Value))!;
+        return Marshal.PtrToStringUTF8(Native.ObjC.sel_getName(Ptr))!;
     }
 }
