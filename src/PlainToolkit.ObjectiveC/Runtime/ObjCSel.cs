@@ -6,15 +6,11 @@ namespace PlainToolkit.ObjectiveC.Runtime;
 /// <summary>
 /// 表示一个 Objective-C SEL 句柄的只读包装。
 /// </summary>
-/// <param name="Value">SEL 的底层指针句柄（<see cref="nint"/>）。</param>
 [StructLayout(LayoutKind.Sequential)]
-public readonly record struct ObjCSel : Pointer
+public readonly record struct ObjCSel : IPointer
 {
-    public ObjCSel(nint ptr)
-    {
-        Ptr = ptr;
-    }
-    
+    public ObjCSel(nint ptr) => Ptr = ptr;
+
     public IntPtr Ptr { get; init; }
 
     public static implicit operator nint(ObjCSel h) => h.Ptr;
