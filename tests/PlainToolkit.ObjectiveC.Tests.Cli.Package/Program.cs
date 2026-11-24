@@ -28,6 +28,22 @@ internal static class Program
 {
     private static ObjCSel Sel(string name) => ObjCSel.FromString(name);
 
+    private static ObjCObject CreateNSString(string value)
+    {
+        var utf8 = Marshal.StringToCoTaskMemUTF8(value);
+
+        try
+        {
+            return ObjCObject.GetClass("NSString")
+                .SendMessage<ObjCObject>(Sel("alloc"))
+                .SendMessage<nint, ObjCObject>(Sel("initWithUTF8String:"), utf8);
+        }
+        finally
+        {
+            Marshal.FreeCoTaskMem(utf8);
+        }
+    }
+
     private static void Main()
     {
         NativeLibrary.Load("/System/Library/Frameworks/AppKit.framework/AppKit");
@@ -66,9 +82,9 @@ internal static class Program
 
         // Create HelloWorld label.
         var label = ObjCObject.GetClass("NSTextField")
-            .SendMessage<ObjCString, ObjCObject>(
+            .SendMessage<ObjCObject, ObjCObject>(
                 Sel("labelWithString:"),
-                ObjCString.FromString("HelloWorld"));
+                CreateNSString("HelloWorld"));
 
         // Horizontal alignment: NSTextAlignmentCenter = 1
         label.SendMessage<nint>(Sel("setAlignment:"), 1);

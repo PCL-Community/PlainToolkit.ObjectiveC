@@ -13,6 +13,11 @@ public readonly record struct ObjCSel : IPointer
 
     public IntPtr Ptr { get; init; }
 
+    /// <summary>
+    /// 获取一个值，该值指示此句柄是否为 <c>NULL</c>。
+    /// </summary>
+    public bool IsNull => Ptr == nint.Zero;
+
     public static implicit operator nint(ObjCSel h) => h.Ptr;
     public static explicit operator ObjCSel(nint ptr) => new(ptr);
 
@@ -29,7 +34,7 @@ public readonly record struct ObjCSel : IPointer
 
         try
         {
-            return new ObjCSel(Native.ObjC.sel_registerName(ptr));
+            return Native.ObjC.sel_registerName(ptr);
         }
         finally
         {
@@ -39,6 +44,7 @@ public readonly record struct ObjCSel : IPointer
 
     public string ToManagedString()
     {
-        return Marshal.PtrToStringUTF8(Native.ObjC.sel_getName(Ptr))!;
+        var name = Native.ObjC.sel_getName(this);
+        return name == nint.Zero ? string.Empty : Marshal.PtrToStringUTF8(name) ?? string.Empty;
     }
 }

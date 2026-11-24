@@ -13,9 +13,18 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
     public sealed class ObjCGenerator : IIncrementalGenerator
     {
         private const string ObjcObjectTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCObject";
+        private const string ObjcClassTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCClass";
         private const string ObjcSelTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCSel";
-        private const string ObjcStringTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCString";
+        private const string ObjcMethodTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCMethod";
+        private const string ObjcIvarTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCIvar";
+        private const string ObjcCategoryTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCCategory";
+        private const string ObjcPropertyTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCProperty";
+        private const string ObjcImpTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCImp";
+        private const string ObjcProtocolTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCProtocol";
+        private const string ObjcCacheTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCCache";
+        private const string ObjcBoolTypeName = "global::PlainToolkit.ObjectiveC.Runtime.ObjCBool";
         private const string NIntTypeName = "nint";
+        private const string ByteTypeName = "byte";
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
@@ -256,8 +265,16 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
             return str switch
             {
                 ObjcObjectTypeName => NIntTypeName,
+                ObjcClassTypeName => NIntTypeName,
                 ObjcSelTypeName => NIntTypeName,
-                ObjcStringTypeName => NIntTypeName,
+                ObjcMethodTypeName => NIntTypeName,
+                ObjcIvarTypeName => NIntTypeName,
+                ObjcCategoryTypeName => NIntTypeName,
+                ObjcPropertyTypeName => NIntTypeName,
+                ObjcImpTypeName => NIntTypeName,
+                ObjcProtocolTypeName => NIntTypeName,
+                ObjcCacheTypeName => NIntTypeName,
+                ObjcBoolTypeName => ByteTypeName,
                 _ => str
             };
         }
@@ -268,8 +285,16 @@ namespace PlainToolkit.ObjectiveC.SourceGenerators
             return str switch
             {
                 ObjcObjectTypeName => $"({ObjcObjectTypeName})",
+                ObjcClassTypeName => $"({ObjcClassTypeName})",
                 ObjcSelTypeName => $"({ObjcSelTypeName})",
-                ObjcStringTypeName => $"({ObjcStringTypeName})",
+                ObjcMethodTypeName => $"({ObjcMethodTypeName})",
+                ObjcIvarTypeName => $"({ObjcIvarTypeName})",
+                ObjcCategoryTypeName => $"({ObjcCategoryTypeName})",
+                ObjcPropertyTypeName => $"({ObjcPropertyTypeName})",
+                ObjcImpTypeName => $"({ObjcImpTypeName})",
+                ObjcProtocolTypeName => $"({ObjcProtocolTypeName})",
+                ObjcCacheTypeName => $"({ObjcCacheTypeName})",
+                ObjcBoolTypeName => $"({ObjcBoolTypeName})",
                 _ => string.Empty
             };
         }

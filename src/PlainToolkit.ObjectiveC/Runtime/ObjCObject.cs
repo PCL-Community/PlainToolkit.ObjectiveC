@@ -5,31 +5,81 @@ using PlainToolkit.ObjectiveC.Native;
 namespace PlainToolkit.ObjectiveC.Runtime;
 
 /// <summary>
-/// 表示一个 Objective-C Class 句柄的只读包装。
+/// 表示一个 Objective-C 对象（<c>id</c>）句柄的只读包装。
 /// </summary>
-/// <param name="Value">Class 的底层指针句柄（<see cref="nint"/>）。</param>
-public readonly record struct ObjCObject(nint Value)
+[StructLayout(LayoutKind.Sequential)]
+public readonly record struct ObjCObject : IPointer
 {
-    public readonly nint Value = Value;
+    /// <summary>
+    /// 使用底层指针初始化 <see cref="ObjCObject"/>。
+    /// </summary>
+    /// <param name="ptr">对象（<c>id</c>）的底层指针句柄。</param>
+    public ObjCObject(nint ptr) => Ptr = ptr;
 
-    public bool IsNull => Value == nint.Zero;
+    /// <inheritdoc />
+    public IntPtr Ptr { get; init; }
 
-    public static implicit operator nint(ObjCObject h) => h.Value;
+    /// <summary>
+    /// 获取一个值，该值指示此句柄是否为 <c>Nil</c>。
+    /// </summary>
+    public bool IsNull => Ptr == nint.Zero;
+
+    public static implicit operator nint(ObjCObject obj) => obj.Ptr;
     public static explicit operator ObjCObject(nint ptr) => new(ptr);
 
-    public static ObjCObject GetClass(string name)
-    {
-        var ptr = Marshal.StringToCoTaskMemUTF8(name);
+    /// <summary>
+    /// 获取具有指定名称的类。
+    /// </summary>
+    /// <param name="name">类的名称。</param>
+    /// <returns>具有指定名称的类；如果不存在，则返回 <c>Nil</c>。</returns>
+    /// <remarks>
+    /// 此方法返回对象形式的类句柄，便于直接发送类方法消息。如果需要强类型的 <see cref="ObjCClass"/> 句柄，
+    /// 请使用 <see cref="ObjCClass.GetClass(string)"/>。
+    /// </remarks>
+    public static ObjCObject GetClass(string name) => ObjCClass.GetClass(name);
 
-        try
+    /// <summary>
+    /// 获取此对象所属的类。
+    /// </summary>
+    public ObjCClass Class => Native.ObjC.object_getClass(this);
+
+    /// <summary>
+    /// 获取此对象所属类的名称。
+    /// </summary>
+    public string ClassName
+    {
+        get
         {
-            return new ObjCObject(Native.Runtime.objc_getClass(ptr));
-        }
-        finally
-        {
-            Marshal.FreeCoTaskMem(ptr);
+            var ptr = Native.ObjC.object_getClassName(this);
+            return ptr == nint.Zero ? string.Empty : Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
         }
     }
+
+    /// <summary>
+    /// 设置此对象的类。
+    /// </summary>
+    /// <param name="cls">新的类。</param>
+    /// <returns>此对象原来的类。</returns>
+    public ObjCClass SetClass(ObjCClass cls) => Native.ObjC.object_setClass(this, cls);
+
+    /// <summary>
+    /// 读取此对象中指定实例变量的值。
+    /// </summary>
+    /// <param name="ivar">实例变量。</param>
+    /// <returns>实例变量的值。</returns>
+    public ObjCObject GetIvar(ObjCIvar ivar) => Native.ObjC.object_getIvar(this, ivar);
+
+    /// <summary>
+    /// 设置此对象中指定实例变量的值。
+    /// </summary>
+    /// <param name="ivar">实例变量。</param>
+    /// <param name="value">新的值。</param>
+    public void SetIvar(ObjCIvar ivar, ObjCObject value) => Native.ObjC.object_setIvar(this, ivar, value);
+
+    /// <summary>
+    /// 获取随此对象一起分配的额外字节的指针。
+    /// </summary>
+    public nint GetIndexedIvars() => Native.ObjC.object_getIndexedIvars(this);
 
     #region SendMessage
 
@@ -136,7 +186,7 @@ public readonly record struct ObjCObject(nint Value)
 
     public unsafe void SendMessage(ObjCSel msg)
     {
-        ((delegate* unmanaged[Cdecl]<nint, nint, void>)Message.MsgSend)(Value, msg);
+        ((delegate* unmanaged[Cdecl]<nint, nint, void>)Message.MsgSend)(Ptr, msg);
     }
 
     public void SendMessage<T>(ObjCSel msg, T arg)
