@@ -25,16 +25,11 @@ public readonly record struct ObjCSel : IPointer
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
 
-        if (name.Contains('\0'))
-        {
-            throw new ArgumentException("Selector 名字不能含有字符串终止符。", nameof(name));
-        }
-
         var ptr = Marshal.StringToCoTaskMemUTF8(name);
 
         try
         {
-            return Native.ObjC.sel_registerName(ptr);
+            return ObjC.sel_registerName(ptr);
         }
         finally
         {
@@ -44,7 +39,7 @@ public readonly record struct ObjCSel : IPointer
 
     public string ToManagedString()
     {
-        var name = Native.ObjC.sel_getName(this);
+        var name = ObjC.sel_getName(this);
         return name == nint.Zero ? string.Empty : Marshal.PtrToStringUTF8(name) ?? string.Empty;
     }
 }

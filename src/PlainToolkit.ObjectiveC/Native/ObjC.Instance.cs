@@ -27,19 +27,6 @@ public static partial class ObjC
     #region Working with Instances
 
     /// <summary>
-    /// <c>void *object_getIndexedIvars(id obj);</c>
-    /// <para>Returns a pointer to any extra bytes allocated with an instance given object.</para>
-    /// </summary>
-    /// <param name="obj">An object.</param>
-    /// <returns>A pointer to any extra bytes allocated with <paramref name="obj"/>.</returns>
-    /// <remarks>
-    /// <see href="https://developer.apple.com/documentation/objectivec/object_getindexedivars(_:)?language=objc">Apple Developer Documentation</see>
-    /// </remarks>
-    [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial nint object_getIndexedIvars(ObjCObject obj);
-
-    /// <summary>
     /// <c>id object_getIvar(id obj, Ivar ivar);</c>
     /// <para>Reads the value of an instance variable in an object.</para>
     /// </summary>
@@ -66,19 +53,6 @@ public static partial class ObjC
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void object_setIvar(ObjCObject obj, ObjCIvar ivar, ObjCObject value);
-
-    /// <summary>
-    /// <c>const char *object_getClassName(id obj);</c>
-    /// <para>Returns the class name of a given object.</para>
-    /// </summary>
-    /// <param name="obj">An object.</param>
-    /// <returns>The name of the class of <paramref name="obj"/>.</returns>
-    /// <remarks>
-    /// <see href="https://developer.apple.com/documentation/objectivec/object_getclassname(_:)?language=objc">Apple Developer Documentation</see>
-    /// </remarks>
-    [LibraryImport(Library)]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial nint object_getClassName(ObjCObject obj);
 
     /// <summary>
     /// <c>Class object_getClass(id obj);</c>
