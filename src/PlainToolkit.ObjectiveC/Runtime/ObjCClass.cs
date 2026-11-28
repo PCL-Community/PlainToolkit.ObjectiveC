@@ -25,7 +25,7 @@ public readonly record struct ObjCClass : IPointer
 
     public static implicit operator nint(ObjCClass cls) => cls.Ptr;
 
-    public static implicit operator ObjCObject(ObjCClass cls) => new(cls.Ptr);
+    public static implicit operator ObjCId(ObjCClass cls) => new(cls.Ptr);
 
     public static explicit operator ObjCClass(nint ptr) => new(ptr);
 
@@ -35,7 +35,7 @@ public readonly record struct ObjCClass : IPointer
     /// <remarks>
     /// <c>Class</c> 本身也是 <c>id</c>，因此可以通过此属性向类发送类方法消息。
     /// </remarks>
-    public ObjCObject AsObject => new(Ptr);
+    public ObjCId AsObject => new(Ptr);
 
     /// <summary>
     /// 获取具有指定名称的类。
@@ -316,7 +316,7 @@ public readonly record struct ObjCClass : IPointer
     /// </summary>
     /// <param name="extraBytes">在实例变量之后额外分配的字节数。</param>
     /// <returns>新创建的实例。</returns>
-    public ObjCObject CreateInstance(nuint extraBytes = 0) =>
+    public ObjCId CreateInstance(nuint extraBytes = 0) =>
         Native.ObjC.class_createInstance(this, extraBytes);
 
     /// <summary>

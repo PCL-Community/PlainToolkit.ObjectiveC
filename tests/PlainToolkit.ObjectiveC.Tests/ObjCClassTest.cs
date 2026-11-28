@@ -20,7 +20,7 @@ public class ObjCClassTest
     public void ObjectAndClassHandlesShareTheSamePointer()
     {
         var cls = ObjCClass.GetClass("NSObject");
-        var obj = (ObjCObject)cls;
+        var obj = (ObjCId)cls;
 
         Assert.Equal((nint)cls, (nint)obj);
         Assert.True(cls.IsMetaClass == false);

@@ -22,7 +22,7 @@ public static partial class ObjC
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void objc_setAssociatedObject(
-        ObjCObject @object, nint key, ObjCObject value, ObjCAssociationPolicy policy);
+        ObjCId @object, nint key, ObjCId value, ObjCAssociationPolicy policy);
 
     /// <summary>
     /// <c>id objc_getAssociatedObject(id object, const void *key);</c>
@@ -36,7 +36,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject objc_getAssociatedObject(ObjCObject @object, nint key);
+    public static partial ObjCId objc_getAssociatedObject(ObjCId @object, nint key);
 
     /// <summary>
     /// <c>void objc_removeAssociatedObjects(id object);</c>
@@ -48,7 +48,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void objc_removeAssociatedObjects(ObjCObject @object);
+    public static partial void objc_removeAssociatedObjects(ObjCId @object);
 
     #endregion
 }

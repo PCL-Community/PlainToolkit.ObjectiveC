@@ -20,7 +20,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject class_createInstance(ObjCClass cls, nuint extraBytes);
+    public static partial ObjCId class_createInstance(ObjCClass cls, nuint extraBytes);
 
     #endregion
 
@@ -37,7 +37,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial nint object_getIndexedIvars(ObjCObject obj);
+    public static partial nint object_getIndexedIvars(ObjCId obj);
 
     /// <summary>
     /// <c>id object_getIvar(id obj, Ivar ivar);</c>
@@ -51,7 +51,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject object_getIvar(ObjCObject obj, ObjCIvar ivar);
+    public static partial ObjCId object_getIvar(ObjCId obj, ObjCIvar ivar);
 
     /// <summary>
     /// <c>void object_setIvar(id obj, Ivar ivar, id value);</c>
@@ -65,7 +65,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void object_setIvar(ObjCObject obj, ObjCIvar ivar, ObjCObject value);
+    public static partial void object_setIvar(ObjCId obj, ObjCIvar ivar, ObjCId value);
 
     /// <summary>
     /// <c>const char *object_getClassName(id obj);</c>
@@ -78,7 +78,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial nint object_getClassName(ObjCObject obj);
+    public static partial nint object_getClassName(ObjCId obj);
 
     /// <summary>
     /// <c>Class object_getClass(id obj);</c>
@@ -91,7 +91,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCClass object_getClass(ObjCObject obj);
+    public static partial ObjCClass object_getClass(ObjCId obj);
 
     /// <summary>
     /// <c>Class object_setClass(id obj, Class cls);</c>
@@ -105,7 +105,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCClass object_setClass(ObjCObject obj, ObjCClass cls);
+    public static partial ObjCClass object_setClass(ObjCId obj, ObjCClass cls);
 
     #endregion
 }

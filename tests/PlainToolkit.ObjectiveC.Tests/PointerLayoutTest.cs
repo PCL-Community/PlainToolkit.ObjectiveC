@@ -10,7 +10,7 @@ public class PointerLayoutTest
     public void HandleWrappersAreSinglePointerSizedStructs()
     {
         Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCSel>());
-        Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCObject>());
+        Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCId>());
         Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCClass>());
         Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCMethod>());
         Assert.Equal(IntPtr.Size, Marshal.SizeOf<ObjCIvar>());
@@ -43,7 +43,7 @@ public class PointerLayoutTest
         nint ptr = 0x1234;
 
         Assert.Equal(ptr, (nint)new ObjCSel(ptr));
-        Assert.Equal(ptr, (nint)new ObjCObject(ptr));
+        Assert.Equal(ptr, (nint)new ObjCId(ptr));
         Assert.Equal(ptr, (nint)new ObjCClass(ptr));
         Assert.Equal(ptr, (nint)new ObjCMethod(ptr));
         Assert.Equal(ptr, (nint)new ObjCIvar(ptr));
@@ -54,7 +54,7 @@ public class PointerLayoutTest
         Assert.Equal(ptr, (nint)new ObjCCache(ptr));
 
         var cls = new ObjCClass(ptr);
-        var obj = (ObjCObject)cls;
+        var obj = (ObjCId)cls;
 
         Assert.False(obj.IsNull);
         Assert.Equal(ptr, (nint)obj);
@@ -64,7 +64,7 @@ public class PointerLayoutTest
     public void HandleWrappersReportNull()
     {
         Assert.True(default(ObjCSel).IsNull);
-        Assert.True(default(ObjCObject).IsNull);
+        Assert.True(default(ObjCId).IsNull);
         Assert.True(default(ObjCClass).IsNull);
         Assert.True(default(ObjCMethod).IsNull);
         Assert.True(default(ObjCIvar).IsNull);

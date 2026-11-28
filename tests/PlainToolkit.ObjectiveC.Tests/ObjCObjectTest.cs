@@ -10,8 +10,8 @@ public class ObjCObjectTest
     {
         NativeLibrary.Load("/System/Library/Frameworks/AppKit.framework/AppKit");
         
-        var app = ObjCObject.GetClass("NSApplication")
-            .SendMessage<ObjCObject>(ObjCSel.FromString("sharedApplication"));
+        var app = ObjCId.GetClass("NSApplication")
+            .SendMessage<ObjCId>(ObjCSel.FromString("sharedApplication"));
         
         Assert.False(app.IsNull);
     }

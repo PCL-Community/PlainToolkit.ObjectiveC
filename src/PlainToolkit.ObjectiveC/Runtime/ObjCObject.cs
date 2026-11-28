@@ -4,17 +4,24 @@ using PlainToolkit.ObjectiveC.Native;
 
 namespace PlainToolkit.ObjectiveC.Runtime;
 
+[StructLayout(LayoutKind.Sequential)]
+public readonly record struct ObjCObject
+{
+    [Obsolete("")]
+    public ObjCClass Isa { get; init; }
+}
+
 /// <summary>
 /// 表示一个 Objective-C 对象（<c>id</c>）句柄的只读包装。
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public readonly record struct ObjCObject : IPointer
+public readonly record struct ObjCId : IPointer
 {
     /// <summary>
-    /// 使用底层指针初始化 <see cref="ObjCObject"/>。
+    /// 使用底层指针初始化 <see cref="ObjCId"/>。
     /// </summary>
     /// <param name="ptr">对象（<c>id</c>）的底层指针句柄。</param>
-    public ObjCObject(nint ptr) => Ptr = ptr;
+    public ObjCId(nint ptr) => Ptr = ptr;
 
     /// <inheritdoc />
     public IntPtr Ptr { get; init; }
@@ -24,8 +31,8 @@ public readonly record struct ObjCObject : IPointer
     /// </summary>
     public bool IsNull => Ptr == nint.Zero;
 
-    public static implicit operator nint(ObjCObject obj) => obj.Ptr;
-    public static explicit operator ObjCObject(nint ptr) => new(ptr);
+    public static implicit operator nint(ObjCId obj) => obj.Ptr;
+    public static explicit operator ObjCId(nint ptr) => new(ptr);
 
     /// <summary>
     /// 获取具有指定名称的类。
@@ -36,12 +43,12 @@ public readonly record struct ObjCObject : IPointer
     /// 此方法返回对象形式的类句柄，便于直接发送类方法消息。如果需要强类型的 <see cref="ObjCClass"/> 句柄，
     /// 请使用 <see cref="ObjCClass.GetClass(string)"/>。
     /// </remarks>
-    public static ObjCObject GetClass(string name) => ObjCClass.GetClass(name);
+    public static ObjCId GetClass(string name) => ObjCClass.GetClass(name);
 
     /// <summary>
     /// 获取此对象所属的类。
     /// </summary>
-    public ObjCClass Class => Native.ObjC.object_getClass(this);
+    public ObjCClass Class => ObjC.object_getClass(this);
 
     /// <summary>
     /// 获取此对象所属类的名称。
@@ -50,7 +57,7 @@ public readonly record struct ObjCObject : IPointer
     {
         get
         {
-            var ptr = Native.ObjC.object_getClassName(this);
+            var ptr = ObjC.object_getClassName(this);
             return ptr == nint.Zero ? string.Empty : Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
         }
     }
@@ -60,26 +67,26 @@ public readonly record struct ObjCObject : IPointer
     /// </summary>
     /// <param name="cls">新的类。</param>
     /// <returns>此对象原来的类。</returns>
-    public ObjCClass SetClass(ObjCClass cls) => Native.ObjC.object_setClass(this, cls);
+    public ObjCClass SetClass(ObjCClass cls) => ObjC.object_setClass(this, cls);
 
     /// <summary>
     /// 读取此对象中指定实例变量的值。
     /// </summary>
     /// <param name="ivar">实例变量。</param>
     /// <returns>实例变量的值。</returns>
-    public ObjCObject GetIvar(ObjCIvar ivar) => Native.ObjC.object_getIvar(this, ivar);
+    public ObjCId GetIvar(ObjCIvar ivar) => ObjC.object_getIvar(this, ivar);
 
     /// <summary>
     /// 设置此对象中指定实例变量的值。
     /// </summary>
     /// <param name="ivar">实例变量。</param>
     /// <param name="value">新的值。</param>
-    public void SetIvar(ObjCIvar ivar, ObjCObject value) => Native.ObjC.object_setIvar(this, ivar, value);
+    public void SetIvar(ObjCIvar ivar, ObjCId value) => ObjC.object_setIvar(this, ivar, value);
 
     /// <summary>
     /// 获取随此对象一起分配的额外字节的指针。
     /// </summary>
-    public nint GetIndexedIvars() => Native.ObjC.object_getIndexedIvars(this);
+    public nint GetIndexedIvars() => ObjC.object_getIndexedIvars(this);
 
     #region SendMessage
 

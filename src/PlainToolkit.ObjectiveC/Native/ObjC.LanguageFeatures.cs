@@ -18,7 +18,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void objc_enumerationMutation(ObjCObject obj);
+    public static partial void objc_enumerationMutation(ObjCId obj);
 
     /// <summary>
     /// <c>void objc_setEnumerationMutationHandler(void (*handler)(id));</c>
@@ -43,7 +43,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCImp imp_implementationWithBlock(ObjCObject block);
+    public static partial ObjCImp imp_implementationWithBlock(ObjCId block);
 
     /// <summary>
     /// <c>id imp_getBlock(IMP anImp);</c>
@@ -56,7 +56,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject imp_getBlock(ObjCImp anImp);
+    public static partial ObjCId imp_getBlock(ObjCImp anImp);
 
     /// <summary>
     /// <c>BOOL imp_removeBlock(IMP anImp);</c>
@@ -82,7 +82,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject objc_loadWeak(nint location);
+    public static partial ObjCId objc_loadWeak(nint location);
 
     /// <summary>
     /// <c>id objc_storeWeak(id *location, id obj);</c>
@@ -96,7 +96,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject objc_storeWeak(nint location, ObjCObject obj);
+    public static partial ObjCId objc_storeWeak(nint location, ObjCId obj);
 
     #endregion
 }

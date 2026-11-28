@@ -9,8 +9,8 @@ class Program
     {
         NativeLibrary.Load("/System/Library/Frameworks/AppKit.framework/AppKit");
         
-        var app = ObjCObject.GetClass("NSApplication")
-            .SendMessage<ObjCObject>(ObjCSel.FromString("sharedApplication"));
+        var app = ObjCId.GetClass("NSApplication")
+            .SendMessage<ObjCId>(ObjCSel.FromString("sharedApplication"));
         
         app.SendMessage<nint>(ObjCSel.FromString("setActivationPolicy:"), 0);
         app.SendMessage(ObjCSel.FromString("activate"));
@@ -20,23 +20,23 @@ class Program
         
         var msg = CreateNSString("测试");
 
-        var alert = ObjCObject.GetClass("NSAlert")
-            .SendMessage<ObjCObject>(Selectors.Alloc)
-            .SendMessage<ObjCObject>(Selectors.Init); 
+        var alert = ObjCId.GetClass("NSAlert")
+            .SendMessage<ObjCId>(Selectors.Alloc)
+            .SendMessage<ObjCId>(Selectors.Init); 
         
         alert.SendMessage<nint>(ObjCSel.FromString("setMessageText:"), msg);
         alert.SendMessage(ObjCSel.FromString("runModal"));
     }
 
-    private static ObjCObject CreateNSString(string value)
+    private static ObjCId CreateNSString(string value)
     {
         var utf8 = Marshal.StringToCoTaskMemUTF8(value);
 
         try
         {
-            return ObjCObject.GetClass("NSString")
-                .SendMessage<ObjCObject>(Selectors.Alloc)
-                .SendMessage<nint, ObjCObject>(Selectors.InitWithUtf8String, utf8);
+            return ObjCId.GetClass("NSString")
+                .SendMessage<ObjCId>(Selectors.Alloc)
+                .SendMessage<nint, ObjCId>(Selectors.InitWithUtf8String, utf8);
         }
         finally
         {

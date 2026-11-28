@@ -59,7 +59,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject objc_getClass(nint name);
+    public static partial ObjCId objc_getClass(nint name);
 
     /// <summary>
     /// <c>Class objc_getRequiredClass(const char *name);</c>
@@ -86,7 +86,7 @@ public static partial class ObjC
     /// </remarks>
     [LibraryImport(Library)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial ObjCObject objc_getMetaClass(nint name);
+    public static partial ObjCId objc_getMetaClass(nint name);
 
     #endregion
 }
